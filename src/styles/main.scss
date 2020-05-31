@@ -28,17 +28,29 @@ body {
 }
 
 .card {
-	margin: auto;
-	background-color: white;
-	width: min-content;
+	background-color: rgba(31, 31, 31, 0.99);
 	justify-content: center;
 	align-items: center;
 	padding: 2rem;
+	display: flex;
+	flex-direction: column;
+	width: 26rem;
+	height: 100vh;
+	color: whitesmoke;
 
-	> input {
-		width: 24rem;
+	> * {
+		margin-bottom: 1rem;
+		vertical-align: middle;
+	}
+
+	input {
+		width: 100%;
 		height: 3rem;
+		background: transparent;
+		color: whitesmoke;
 		font-size: 1.5rem;
+		border: 0;
+		vertical-align: middle;
 	}
 }
 
@@ -51,6 +63,7 @@ body {
 	user-select: none;
 	flex-direction: column;
 	padding: 1rem 0;
+	z-index: 99;
 
 	i {
 		color: white;
@@ -98,6 +111,30 @@ body {
 
 			.active {
 				background-color: rgba(255, 255, 255, 0.31);
+			}
+		}
+	}
+
+	> .view {
+		position: absolute;
+		right: -26rem;
+		transition: 0.2s;
+		transform: translateX(0);
+
+		&.active {
+			transform: translateX(-29rem);
+		}
+	}
+
+	> .services {
+		> .view {
+			position: absolute;
+			left: -26rem;
+			transition: 0.2s;
+			transform: translateX(0);
+
+			&.active {
+				transform: translateX(29rem);
 			}
 		}
 	}

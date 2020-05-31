@@ -4,6 +4,7 @@ import { observer } from "mobx-react";
 import React from "react";
 import { action, observable } from "mobx";
 import { Services } from "./Services";
+import { ZoneSettings } from "./ZoneSettings";
 
 const ZoneList = new ZoneStore();
 const hydrate = create();
@@ -13,6 +14,10 @@ hydrate("zones", ZoneList);
 export class Zones extends React.Component {
 	@observable Active = 0;
 	@observable Settings = false;
+
+	get ActiveZone() {
+		return ZoneList.Zones[this.Active];
+	}
 
 	render() {
 		return (
@@ -52,6 +57,11 @@ export class Zones extends React.Component {
 							add
 						</i>
 					</div>
+				</div>
+				<div className={"view " + (this.Settings ? "active" : "")}>
+					{this.ActiveZone ? (
+						<ZoneSettings Zone={this.ActiveZone}></ZoneSettings>
+					) : null}
 				</div>
 			</div>
 		);

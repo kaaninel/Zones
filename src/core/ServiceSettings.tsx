@@ -13,17 +13,22 @@ export class ServiceSettings extends React.Component<Props> {
 		return (
 			<div className="settingsPage">
 				<div className="card">
-					<input
-						type="url"
-						value={this.props.Service.URL}
-						onChange={this.Save.bind(this, "URL")}
-					/>
-					Persistent:
-					<input
-						type="checkbox"
-						checked={this.props.Service.Persistent}
-						onChange={this.Save.bind(this, "Persistent")}
-					/>
+					<div>
+						URL
+						<input
+							type="text"
+							value={this.props.Service.URL}
+							onChange={this.Save.bind(this, "URL")}
+						/>
+					</div>
+					<div>
+						Persistent
+						<input
+							type="checkbox"
+							checked={this.props.Service.Persistent}
+							onChange={this.Save.bind(this, "Persistent")}
+						/>
+					</div>
 				</div>
 			</div>
 		);

@@ -13,22 +13,30 @@ export class ZoneSettings extends React.Component<Props> {
 		return (
 			<div className="settingsPage">
 				<div className="card">
-					<input
-						type="url"
-						value={this.props.Zone.Name}
-						onChange={this.Save.bind(this, "Name")}
-					/>
-					<input
-						type="text"
-						value={this.props.Zone.Icon}
-						onChange={this.Save.bind(this, "Icon")}
-					/>
-					Persistent:
-					<input
-						type="checkbox"
-						checked={this.props.Zone.Persistent}
-						onChange={this.Save.bind(this, "Persistent")}
-					/>
+					<div>
+						Name
+						<input
+							type="text"
+							value={this.props.Zone.Name}
+							onChange={this.Save.bind(this, "Name")}
+						/>
+					</div>
+					<div>
+						Icon
+						<input
+							type="text"
+							value={this.props.Zone.Icon}
+							onChange={this.Save.bind(this, "Icon")}
+						/>
+					</div>
+					<div>
+						Persistent
+						<input
+							type="checkbox"
+							checked={this.props.Zone.Persistent}
+							onChange={this.Save.bind(this, "Persistent")}
+						/>
+					</div>
 				</div>
 			</div>
 		);

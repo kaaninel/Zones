@@ -49,12 +49,6 @@ export class Services extends React.Component<{
 					</div>
 				</div>
 				<div className="display">
-					{this.props.ZoneSettings ? (
-						<ZoneSettings Zone={this.props.Zone}></ZoneSettings>
-					) : null}
-					{this.Settings ? (
-						<ServiceSettings Service={this.ActiveService}></ServiceSettings>
-					) : null}
 					{this.props.Zone.Services.map((Service, i) =>
 						Service.Persistent || this.Active === i ? (
 							<webview
@@ -62,10 +56,15 @@ export class Services extends React.Component<{
 								src={"https://" + Service.URL}
 								useragent={Agent}
 								key={i}
-								hidden={this.Active !== i || this.Settings}
+								hidden={this.Active !== i}
 							/>
 						) : null
 					)}
+				</div>
+				<div className={"view " + (this.Settings ? "active" : "")}>
+					{this.ActiveService ? (
+						<ServiceSettings Service={this.ActiveService}></ServiceSettings>
+					) : null}
 				</div>
 			</div>
 		);
