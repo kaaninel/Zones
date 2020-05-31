@@ -19,9 +19,15 @@ export class ZoneSettings extends React.Component<Props> {
 						onChange={this.Save.bind(this, "Name")}
 					/>
 					<input
-						type="url"
+						type="text"
 						value={this.props.Zone.Icon}
 						onChange={this.Save.bind(this, "Icon")}
+					/>
+					Persistent:
+					<input
+						type="checkbox"
+						checked={this.props.Zone.Persistent}
+						onChange={this.Save.bind(this, "Persistent")}
 					/>
 				</div>
 			</div>
@@ -29,9 +35,13 @@ export class ZoneSettings extends React.Component<Props> {
 	}
 
 	@action
-	Save(Key: string, Event: ChangeEvent) {
+	Save(Key: Extract<keyof Zone, string>, Event: ChangeEvent) {
 		const Input = Event.currentTarget as HTMLInputElement;
-		//@ts-ignore
-		this.props.Zone[Key] = Input.value;
+		const Zone = this.props.Zone as any;
+		if (Input.type === "checkbox") {
+			Zone[Key] = Input.checked;
+		} else {
+			Zone[Key] = Input.value;
+		}
 	}
 }

@@ -12,6 +12,7 @@ const Agent =
 export class Services extends React.Component<{
 	Zone: Zone;
 	ZoneSettings: boolean;
+	Active: boolean;
 }> {
 	@observable Active = 0;
 	@observable Settings = false;
@@ -22,7 +23,7 @@ export class Services extends React.Component<{
 
 	render() {
 		return (
-			<div className="services">
+			<div className="services" hidden={!this.props.Active}>
 				<div className="bar">
 					<div className="list">
 						{this.props.Zone.Services.map((Service, i) => (
@@ -54,15 +55,17 @@ export class Services extends React.Component<{
 					{this.Settings ? (
 						<ServiceSettings Service={this.ActiveService}></ServiceSettings>
 					) : null}
-					{this.props.Zone.Services.map((Service, i) => (
-						<webview
-							partition={`persist:${this.props.Zone.Name}//${Service.URL}`}
-							src={"https://" + Service.URL}
-							useragent={Agent}
-							key={i}
-							hidden={this.Active !== i || this.Settings}
-						/>
-					))}
+					{this.props.Zone.Services.map((Service, i) =>
+						Service.Persistent || this.Active === i ? (
+							<webview
+								partition={`persist:${this.props.Zone.Name}//${Service.URL}/${i}`}
+								src={"https://" + Service.URL}
+								useragent={Agent}
+								key={i}
+								hidden={this.Active !== i || this.Settings}
+							/>
+						) : null
+					)}
 				</div>
 			</div>
 		);
@@ -70,7 +73,7 @@ export class Services extends React.Component<{
 
 	@action
 	New() {
-		this.props.Zone.Services.push(new Service(`https://google.com`));
+		this.props.Zone.Services.push(new Service(`google.com`));
 	}
 
 	@action

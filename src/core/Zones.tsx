@@ -11,24 +11,31 @@ hydrate("zones", ZoneList);
 
 @observer
 export class Zones extends React.Component {
-	@observable Active?: Zone = ZoneList.Zones[0];
+	@observable Active = 0;
 	@observable Settings = false;
 
 	render() {
 		return (
 			<div className="zones">
-				{this.Active ? (
-					<Services ZoneSettings={this.Settings} Zone={this.Active}></Services>
-				) : null}
+				{ZoneList.Zones.map((Zone, i) =>
+					Zone.Persistent || this.Active === i ? (
+						<Services
+							key={i}
+							ZoneSettings={this.Settings}
+							Zone={Zone}
+							Active={this.Active === i}
+						></Services>
+					) : null
+				)}
 				<div className="bar">
 					<div className="list">
-						{ZoneList.Zones.map((Zone) => (
+						{ZoneList.Zones.map((Zone, i) => (
 							<i
 								className={
-									"material-icons " + (Zone === this.Active ? "active" : "")
+									"material-icons " + (i === this.Active ? "active" : "")
 								}
 								key={Zone.Name}
-								onClick={() => this.Select(Zone)}
+								onClick={() => this.Select(i)}
 							>
 								{Zone.Icon}
 							</i>
@@ -56,7 +63,7 @@ export class Zones extends React.Component {
 	}
 
 	@action
-	Select(Zone: Zone) {
-		this.Active = Zone;
+	Select(Index: number) {
+		this.Active = Index;
 	}
 }
