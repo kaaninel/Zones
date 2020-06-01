@@ -3,7 +3,7 @@ import React from "react";
 import { Zone, Service } from "../stores/ZoneStore";
 import { observable, action } from "mobx";
 import { ServiceSettings } from "./ServiceSettings";
-import { ZoneSettings } from "./ZoneSettings";
+import { View } from "./View";
 
 const Agent =
 	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36";
@@ -15,13 +15,26 @@ export class Services extends React.Component<{
 	Active: boolean;
 }> {
 	@observable Active = 0;
-	@observable Settings = false;
+	@observable ActiveExtension: string | null = null;
+
+	@observable Extensions = {
+		settings: ServiceSettings,
+	};
+
+	@observable ExtensionList = [null, "settings"];
 
 	get ActiveService() {
 		return this.props.Zone.Services[this.Active];
 	}
 
+	get Extension() {
+		return (
+			this.ActiveExtension && (this.Extensions as any)[this.ActiveExtension]
+		);
+	}
+
 	render() {
+		const Extension = this.Extension;
 		return (
 			<div className="services" hidden={!this.props.Active}>
 				<div className="bar">
@@ -32,17 +45,26 @@ export class Services extends React.Component<{
 								alt={Service.URL}
 								className={i === this.Active ? "active" : ""}
 								key={i}
-								onClick={() => this.Select(i)}
+								onClick={() => (this.Active = i)}
 							/>
 						))}
 					</div>
 					<div className="bottom">
-						<i
-							className="material-icons settings"
-							onClick={() => (this.Settings = !this.Settings)}
-						>
-							settings
-						</i>
+						{this.ExtensionList.map(
+							(Icon) =>
+								Icon && (
+									<i
+										key={Icon}
+										className="material-icons"
+										onClick={() =>
+											(this.ActiveExtension =
+												this.ActiveExtension === Icon ? null : Icon)
+										}
+									>
+										{Icon}
+									</i>
+								)
+						)}
 						<i className="material-icons" onClick={() => this.New()}>
 							add
 						</i>
@@ -51,20 +73,20 @@ export class Services extends React.Component<{
 				<div className="display">
 					{this.props.Zone.Services.map((Service, i) =>
 						Service.Persistent || this.Active === i ? (
-							<webview
-								partition={`persist:${this.props.Zone.Name}//${Service.URL}/${i}`}
-								src={"https://" + Service.URL}
-								useragent={Agent}
+							<View
+								Zone={this.props.Zone}
+								Index={i}
+								Active={this.Active === i}
+								Service={Service}
 								key={i}
-								hidden={this.Active !== i}
 							/>
 						) : null
 					)}
 				</div>
-				<div className={"view " + (this.Settings ? "active" : "")}>
-					{this.ActiveService ? (
-						<ServiceSettings Service={this.ActiveService}></ServiceSettings>
-					) : null}
+				<div className={"view " + (this.ActiveExtension ? "active" : "")}>
+					{this.ActiveService && this.ActiveExtension && (
+						<Extension key={this.Extension} Service={this.ActiveService} />
+					)}
 				</div>
 			</div>
 		);
@@ -73,10 +95,5 @@ export class Services extends React.Component<{
 	@action
 	New() {
 		this.props.Zone.Services.push(new Service(`google.com`));
-	}
-
-	@action
-	Select(Index: number) {
-		this.Active = Index;
 	}
 }

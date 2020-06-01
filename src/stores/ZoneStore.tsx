@@ -3,6 +3,8 @@ import { persist } from "mobx-persist";
 
 export class Service {
 	@persist @observable URL: string;
+	@persist @observable CustomCSS: string | null = null;
+	@persist @observable Partition: string | null = null;
 	@persist @observable Persistent = false;
 
 	constructor(URL: string) {
