@@ -34,6 +34,15 @@ export class Services extends React.Component<{
 	}
 
 	render() {
+		const Views = this.props.Zone.Services.map((Service, i) => (
+			<View
+				Zone={this.props.Zone}
+				Index={i}
+				Active={this.Active === i}
+				Service={Service}
+				key={i}
+			/>
+		));
 		const Extension = this.Extension;
 		return (
 			<div className="services" hidden={!this.props.Active}>
@@ -41,8 +50,10 @@ export class Services extends React.Component<{
 					<div className="list">
 						{this.props.Zone.Services.map((Service, i) => (
 							<img
-								src={`https://api.faviconkit.com/${Service.URL}/144`}
-								alt={Service.URL}
+								src={
+									Service.Icon ||
+									"https://static.thenounproject.com/png/74651-200.png"
+								}
 								className={i === this.Active ? "active" : ""}
 								key={i}
 								onClick={() => (this.Active = i)}
@@ -71,16 +82,8 @@ export class Services extends React.Component<{
 					</div>
 				</div>
 				<div className="display">
-					{this.props.Zone.Services.map((Service, i) =>
-						Service.Persistent || this.Active === i ? (
-							<View
-								Zone={this.props.Zone}
-								Index={i}
-								Active={this.Active === i}
-								Service={Service}
-								key={i}
-							/>
-						) : null
+					{Views.filter(
+						(view, i) => view.props.Service.Persistent || this.Active === i
 					)}
 				</div>
 				<div className={"view " + (this.ActiveExtension ? "active" : "")}>

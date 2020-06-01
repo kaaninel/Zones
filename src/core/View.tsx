@@ -1,6 +1,8 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { Zone, Service } from "../stores/ZoneStore";
+import { observable } from "mobx";
+import { PageFaviconUpdatedEvent } from "electron";
 
 const Agent =
 	"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.113 Safari/537.36";
@@ -12,7 +14,7 @@ export class View extends React.Component<{
 	Index: number;
 	Active: boolean;
 }> {
-	view = React.createRef<HTMLWebViewElement>();
+	private view = React.createRef<HTMLWebViewElement>();
 
 	render() {
 		return (
@@ -38,5 +40,11 @@ export class View extends React.Component<{
 			if (view && view.insertCSS && this.props.Service.CustomCSS)
 				view.insertCSS(this.props.Service.CustomCSS);
 		});
+		(view as any).addEventListener(
+			"page-favicon-updated",
+			(e: PageFaviconUpdatedEvent) => {
+				this.props.Service.Icon = e.favicons[0];
+			}
+		);
 	}
 }
