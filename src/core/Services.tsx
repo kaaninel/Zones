@@ -83,7 +83,10 @@ export class Services extends React.Component<{
 				</div>
 				<div className="display">
 					{Views.filter(
-						(view, i) => view.props.Service.Persistent || this.Active === i
+						(view, i) =>
+							view.props.Zone.SoftClose ||
+							view.props.Service.Persistent ||
+							this.Active === i
 					)}
 				</div>
 				<div className={"view " + (this.ActiveExtension ? "active" : "")}>

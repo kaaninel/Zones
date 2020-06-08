@@ -44,6 +44,14 @@ export class ServiceSettings extends React.Component<Props> {
 						onChange={this.Save.bind(this, "Persistent")}
 					/>
 				</div>
+				<div>
+					Insecure
+					<input
+						type="checkbox"
+						checked={this.props.Service.Insecure}
+						onChange={this.Save.bind(this, "Insecure")}
+					/>
+				</div>
 			</div>
 		);
 	}

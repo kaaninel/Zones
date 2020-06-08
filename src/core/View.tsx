@@ -1,7 +1,6 @@
 import { observer } from "mobx-react";
 import React from "react";
 import { Zone, Service } from "../stores/ZoneStore";
-import { observable } from "mobx";
 import { PageFaviconUpdatedEvent } from "electron";
 
 const Agent =
@@ -28,6 +27,7 @@ export class View extends React.Component<{
 				useragent={Agent}
 				key={this.props.Index}
 				hidden={!this.props.Active}
+				allowpopups={"true" as any}
 			/>
 		);
 	}

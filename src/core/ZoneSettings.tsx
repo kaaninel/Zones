@@ -36,6 +36,14 @@ export class ZoneSettings extends React.Component<Props> {
 						onChange={this.Save.bind(this, "Persistent")}
 					/>
 				</div>
+				<div>
+					Soft Close
+					<input
+						type="checkbox"
+						checked={this.props.Zone.SoftClose}
+						onChange={this.Save.bind(this, "SoftClose")}
+					/>
+				</div>
 			</div>
 		);
 	}
