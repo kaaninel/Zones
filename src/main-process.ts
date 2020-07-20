@@ -14,8 +14,9 @@ function createWindow () {
 		height: 600,
 		webPreferences: {
 			nodeIntegration: true,
-			webviewTag: true
-		}
+			webviewTag: true,
+			partition: "persist:zones"
+		},
 	});
 
 	if (IS_DEV) {
