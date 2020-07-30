@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron";
+
 declare const ENVIRONMENT: String;
 
 const IS_DEV = ENVIRONMENT == "development";
@@ -16,7 +17,7 @@ function createWindow () {
 			nodeIntegration: true,
 			webviewTag: true,
 			partition: "persist:zones"
-		},
+		}
 	});
 
 	if (IS_DEV) {
